@@ -1,0 +1,14 @@
+#student-form {
+  max-width: 640px;
+}
+
+@media (min-width: 720px) {
+  #student-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #student-form .form__group--full,
+  #student-form .form__actions {
+    grid-column: 1 / -1;
+  }
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Alunos — Sistema Acadêmico</title>
+  <meta name="description" content="Cadastre um novo aluno no sistema acadêmico." />
+  <link rel="stylesheet" href="assets/css/reset.css" />
+  <link rel="stylesheet" href="assets/css/variables.css" />
+  <link rel="stylesheet" href="assets/css/global.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/cadastro.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo" aria-label="Página inicial">
+        <span class="header__logo-mark">SA</span>
+        <span class="header__logo-text">Sistema Acadêmico</span>
+      </a>
+      <nav class="header__menu" aria-label="Navegação principal">
+        <a class="header__link" href="index.html">Home</a>
+        <a class="header__link header__link--active" href="cadastro.html">Cadastro</a>
+        <a class="header__link" href="listagem.html">Alunos</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="page" aria-labelledby="page-title">
+      <div class="page__header">
+        <h1 class="page__title" id="page-title">Cadastro de Aluno</h1>
+        <p class="page__subtitle">Preencha os dados abaixo para registrar um novo aluno.</p>
+      </div>
+
+      <div class="alert alert--hidden" id="alert" role="status" aria-live="polite"></div>
+
+      <form class="form" id="student-form" novalidate>
+        <input type="hidden" id="student-id" />
+
+        <div class="form__group">
+          <label class="form__label" for="name">Nome completo</label>
+          <input class="form__input" type="text" id="name" name="name"
+            autocomplete="name" required aria-required="true" />
+          <span class="form__error" id="name-error"></span>
+        </div>
+
+        <div class="form__group">
+          <label class="form__label" for="registration">Matrícula</label>
+          <input class="form__input" type="text" id="registration" name="registration"
+            autocomplete="off" required aria-required="true" />
+          <span class="form__error" id="registration-error"></span>
+        </div>
+
+        <div class="form__group">
+          <label class="form__label" for="course">Curso</label>
+          <input class="form__input" type="text" id="course" name="course"
+            autocomplete="off" required aria-required="true" />
+          <span class="form__error" id="course-error"></span>
+        </div>
+
+        <div class="form__group">
+          <label class="form__label" for="email">E-mail</label>
+          <input class="form__input" type="email" id="email" name="email"
+            autocomplete="email" required aria-required="true" />
+          <span class="form__error" id="email-error"></span>
+        </div>
+
+        <div class="form__group">
+          <label class="form__label" for="phone">Telefone</label>
+          <input class="form__input" type="tel" id="phone" name="phone"
+            autocomplete="tel" required aria-required="true"
+            placeholder="(11) 91234-5678" />
+          <span class="form__error" id="phone-error"></span>
+        </div>
+
+        <div class="form__actions">
+          <button type="submit" class="button button--primary" id="submit-btn">Salvar</button>
+          <button type="reset" class="button button--secondary" id="reset-btn">Limpar</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p class="footer__text">© <span id="year"></span> Sistema Acadêmico — MVP em Vanilla JS.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/form.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

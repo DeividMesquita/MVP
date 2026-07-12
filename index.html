@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema Acadêmico — Início</title>
+  <meta name="description" content="Sistema simples para cadastro e gestão de alunos." />
+  <link rel="stylesheet" href="assets/css/reset.css" />
+  <link rel="stylesheet" href="assets/css/variables.css" />
+  <link rel="stylesheet" href="assets/css/global.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/home.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo" aria-label="Página inicial">
+        <span class="header__logo-mark">SA</span>
+        <span class="header__logo-text">Sistema Acadêmico</span>
+      </a>
+      <nav class="header__menu" aria-label="Navegação principal">
+        <a class="header__link header__link--active" href="index.html">Home</a>
+        <a class="header__link" href="cadastro.html">Cadastro</a>
+        <a class="header__link" href="listagem.html">Alunos</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__content">
+        <p class="hero__eyebrow">MVP acadêmico</p>
+        <h1 class="hero__title" id="hero-title">Gestão de alunos simples e direta</h1>
+        <p class="hero__text">
+          Cadastre, visualize e organize informações de alunos em um só lugar.
+          Tudo salvo no seu navegador — sem contas, sem servidores.
+        </p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="cadastro.html">Cadastrar aluno</a>
+          <a class="button button--secondary" href="listagem.html">Visualizar alunos</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" aria-labelledby="features-title">
+      <h2 class="features__title" id="features-title">Sobre o projeto</h2>
+      <p class="features__lead">
+        Este sistema é um MVP construído com HTML, CSS e JavaScript puro.
+        O objetivo é oferecer uma base leve para cadastro acadêmico, com foco
+        em clareza, acessibilidade e responsividade.
+      </p>
+      <div class="features__grid">
+        <article class="card">
+          <h3 class="card__title">Cadastro rápido</h3>
+          <p class="card__text">Formulário direto com validação dos campos obrigatórios.</p>
+        </article>
+        <article class="card">
+          <h3 class="card__title">Listagem clara</h3>
+          <p class="card__text">Tabela responsiva com opções de editar e excluir alunos.</p>
+        </article>
+        <article class="card">
+          <h3 class="card__title">100% no navegador</h3>
+          <p class="card__text">Todos os dados ficam no LocalStorage do seu dispositivo.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <p class="footer__text">© <span id="year"></span> Sistema Acadêmico — MVP em Vanilla JS.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
