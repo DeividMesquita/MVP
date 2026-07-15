@@ -3,8 +3,6 @@
   const form = document.getElementById("student-form");
   if (!form) return;
 
-  const alertEl = document.getElementById("alert");
-
   const fields = ["name", "registration", "course", "email", "phone"].map((name) => ({
     name,
     input: document.getElementById(name),
@@ -41,14 +39,20 @@
     return valid;
   };
 
-  fields.forEach(({ input, error }) => {
-    input.addEventListener("input", () => Utils.setFieldError(input, error, ""));
+  fields.forEach(({ name, input, error }) => {
+    input.addEventListener("input", () => {
+      const value = input.value.trim();
+      if (!value) return Utils.setFieldError(input, error, "");
+      if (name === "email" && !Utils.isEmail(value)) return Utils.setFieldError(input, error, "Informe um e-mail válido.");
+      if (name === "phone" && !Utils.isPhone(value)) return Utils.setFieldError(input, error, "Informe um telefone válido.");
+      Utils.setFieldError(input, error, "");
+    });
   });
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     if (!validate()) {
-      Utils.showAlert(alertEl, "Verifique os campos destacados.", "danger");
+      Utils.toast("Verifique os campos destacados.", "danger");
       return;
     }
 
@@ -63,13 +67,12 @@
     };
 
     Storage.add(student);
-    Utils.showAlert(alertEl, "Aluno cadastrado com sucesso!", "success");
+    Utils.toast("Aluno cadastrado com sucesso.", "success");
     form.reset();
     fields[0].input.focus();
   });
 
   form.addEventListener("reset", () => {
     fields.forEach(({ input, error }) => Utils.setFieldError(input, error, ""));
-    Utils.hideAlert(alertEl);
   });
 })();
