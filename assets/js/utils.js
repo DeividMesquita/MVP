@@ -1,16 +1,57 @@
 /* Funções auxiliares reutilizáveis */
 const Utils = (() => {
-  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const PHONE_DIGITS_MIN = 8;
+  const EMAIL_REGEX = /^(?!\.)(?!.*\.\.)(?!.*\.@)[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?(?:\.[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?)+$/i;
+  const PHONE_DIGITS_MIN = 10;
+  const PHONE_DIGITS_MAX = 11;
 
   const isEmail = (value) => EMAIL_REGEX.test(String(value).trim());
 
   const isPhone = (value) => {
     const digits = String(value).replace(/\D/g, "");
-    return digits.length >= PHONE_DIGITS_MIN;
+    return digits.length >= PHONE_DIGITS_MIN && digits.length <= PHONE_DIGITS_MAX;
+  };
+
+  const formatPhone = (value) => {
+    const digits = String(value ?? "").replace(/\D/g, "").slice(0, PHONE_DIGITS_MAX);
+    if (!digits) return "";
+    if (digits.length <= 2) return `(${digits}`;
+
+    const ddd = digits.slice(0, 2);
+    const number = digits.slice(2);
+    const firstPartLength = digits.length === PHONE_DIGITS_MAX ? 5 : 4;
+    const firstPart = number.slice(0, firstPartLength);
+    const secondPart = number.slice(firstPartLength);
+
+    return secondPart ? `(${ddd}) ${firstPart}-${secondPart}` : `(${ddd}) ${firstPart}`;
   };
 
   const isNotEmpty = (value) => String(value ?? "").trim().length > 0;
+
+  const getStudentFieldValidationMessage = (name, value) => {
+    if (!isNotEmpty(value)) return "Este campo é obrigatório.";
+    if (name === "email" && !isEmail(value)) return "Informe um e-mail válido.";
+    if (name === "phone" && !isPhone(value)) return "Informe um telefone válido.";
+    return "";
+  };
+
+  const applyPhoneMask = (input) => {
+    const cursorPosition = input.selectionStart ?? input.value.length;
+    const digitsBeforeCursor = input.value.slice(0, cursorPosition).replace(/\D/g, "").length;
+    const formattedValue = formatPhone(input.value);
+
+    input.value = formattedValue;
+
+    let digitsFound = 0;
+    let newCursorPosition = formattedValue.length;
+    for (let index = 0; index < formattedValue.length; index += 1) {
+      if (/\d/.test(formattedValue[index])) digitsFound += 1;
+      if (digitsFound === digitsBeforeCursor) {
+        newCursorPosition = index + 1;
+        break;
+      }
+    }
+    input.setSelectionRange(newCursorPosition, newCursorPosition);
+  };
 
   const generateId = () =>
     "a_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
@@ -69,7 +110,10 @@ const Utils = (() => {
   return {
     isEmail,
     isPhone,
+    formatPhone,
     isNotEmpty,
+    getStudentFieldValidationMessage,
+    applyPhoneMask,
     generateId,
     escapeHTML,
     toast,

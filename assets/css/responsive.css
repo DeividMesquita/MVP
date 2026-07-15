@@ -33,6 +33,8 @@
 
   .steps, .stats__grid, .list-controls { grid-template-columns: 1fr; }
 
+  .list-controls__actions .button { width: 100%; }
+
   .page__header--row {
     flex-direction: column;
     align-items: flex-start;

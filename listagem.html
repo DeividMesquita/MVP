@@ -47,6 +47,11 @@
           <label class="form__label" for="course-filter">Filtrar por curso</label>
           <select class="form__input" id="course-filter"><option value="">Todos os cursos</option></select>
         </div>
+        <div class="list-controls__actions">
+          <button class="button button--secondary" type="button" id="export-students">
+            <i class="bi bi-download" aria-hidden="true"></i> Exportar para Excel
+          </button>
+        </div>
       </div>
       <p class="list-count" id="list-count" aria-live="polite"></p>
 
@@ -132,6 +137,7 @@
 
   <script src="assets/js/utils.js"></script>
   <script src="assets/js/storage.js"></script>
+  <script src="assets/js/export.js"></script>
   <script src="assets/js/list.js"></script>
   <script src="assets/js/main.js"></script>
 </body>

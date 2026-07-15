@@ -1,4 +1,4 @@
-/* Cadastro e validação do formulário de alunos */
+/* Cadastro e validação do formulário de alunos. */
 (function initForm() {
   const form = document.getElementById("student-form");
   if (!form) return;
@@ -9,44 +9,26 @@
     error: document.getElementById(`${name}-error`),
   }));
 
-  const validate = () => {
-    let valid = true;
-
-    fields.forEach(({ name, input, error }) => {
-      const value = input.value.trim();
-
-      if (!Utils.isNotEmpty(value)) {
-        Utils.setFieldError(input, error, "Este campo é obrigatório.");
-        valid = false;
-        return;
-      }
-
-      if (name === "email" && !Utils.isEmail(value)) {
-        Utils.setFieldError(input, error, "Informe um e-mail válido.");
-        valid = false;
-        return;
-      }
-
-      if (name === "phone" && !Utils.isPhone(value)) {
-        Utils.setFieldError(input, error, "Informe um telefone válido.");
-        valid = false;
-        return;
-      }
-
-      Utils.setFieldError(input, error, "");
-    });
-
-    return valid;
+  const validateField = ({ name, input, error }) => {
+    const message = Utils.getStudentFieldValidationMessage(name, input.value.trim());
+    Utils.setFieldError(input, error, message);
+    return !message;
   };
 
-  fields.forEach(({ name, input, error }) => {
+  const validate = () => fields.every(validateField);
+
+  fields.forEach((field) => {
+    const { name, input, error } = field;
+
     input.addEventListener("input", () => {
-      const value = input.value.trim();
-      if (!value) return Utils.setFieldError(input, error, "");
-      if (name === "email" && !Utils.isEmail(value)) return Utils.setFieldError(input, error, "Informe um e-mail válido.");
-      if (name === "phone" && !Utils.isPhone(value)) return Utils.setFieldError(input, error, "Informe um telefone válido.");
-      Utils.setFieldError(input, error, "");
+      if (name === "phone") Utils.applyPhoneMask(input);
+      if (!input.value.trim()) {
+        Utils.setFieldError(input, error, "");
+        return;
+      }
+      validateField(field);
     });
+    input.addEventListener("blur", () => validateField(field));
   });
 
   form.addEventListener("submit", (event) => {

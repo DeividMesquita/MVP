@@ -9,6 +9,7 @@
   const listCount = document.getElementById("list-count");
   const searchInput = document.getElementById("search-student");
   const courseFilter = document.getElementById("course-filter");
+  const exportButton = document.getElementById("export-students");
   const editModal = document.getElementById("edit-modal");
   const deleteModal = document.getElementById("delete-modal");
   const editForm = document.getElementById("edit-form");
@@ -74,19 +75,18 @@
 
   const openEdit = (student) => {
     editIdInput.value = student.id;
-    editFields.forEach(({ name, input, error }) => { input.value = student[name] ?? ""; Utils.setFieldError(input, error, ""); });
+    editFields.forEach(({ name, input, error }) => {
+      input.value = name === "phone" ? Utils.formatPhone(student[name]) : student[name] ?? "";
+      Utils.setFieldError(input, error, "");
+    });
     showModal(editModal);
   };
-  const validateEdit = () => {
-    let isValid = true;
-    editFields.forEach(({ name, input, error }) => {
-      const value = input.value.trim();
-      const message = !value ? "Este campo é obrigatório." : name === "email" && !Utils.isEmail(value) ? "Informe um e-mail válido." : name === "phone" && !Utils.isPhone(value) ? "Informe um telefone válido." : "";
-      Utils.setFieldError(input, error, message);
-      if (message) isValid = false;
-    });
-    return isValid;
+  const validateEditField = ({ name, input, error }) => {
+    const message = Utils.getStudentFieldValidationMessage(name, input.value.trim());
+    Utils.setFieldError(input, error, message);
+    return !message;
   };
+  const validateEdit = () => editFields.every(validateEditField);
 
   tbody.addEventListener("click", (event) => {
     const button = event.target.closest("button[data-action]");
@@ -98,6 +98,13 @@
   });
   searchInput.addEventListener("input", render);
   courseFilter.addEventListener("change", render);
+  exportButton.addEventListener("click", () => {
+    const exported = StudentExporter.exportStudents(Storage.readAll());
+    Utils.toast(
+      exported ? "Arquivo exportado com sucesso." : "Nenhum aluno cadastrado para exportação.",
+      exported ? "success" : "info"
+    );
+  });
   editForm.addEventListener("submit", (event) => {
     event.preventDefault();
     if (!validateEdit()) return;
@@ -108,11 +115,19 @@
     render();
   });
   cancelBtn.addEventListener("click", () => closeModal(editModal));
-  editFields.forEach(({ name, input, error }) => input.addEventListener("input", () => {
-    const value = input.value.trim();
-    const message = !value ? "" : name === "email" && !Utils.isEmail(value) ? "Informe um e-mail válido." : name === "phone" && !Utils.isPhone(value) ? "Informe um telefone válido." : "";
-    Utils.setFieldError(input, error, message);
-  }));
+  editFields.forEach((field) => {
+    const { name, input, error } = field;
+
+    input.addEventListener("input", () => {
+      if (name === "phone") Utils.applyPhoneMask(input);
+      if (!input.value.trim()) {
+        Utils.setFieldError(input, error, "");
+        return;
+      }
+      validateEditField(field);
+    });
+    input.addEventListener("blur", () => validateEditField(field));
+  });
   deleteCancel.addEventListener("click", () => closeModal(deleteModal));
   deleteConfirm.addEventListener("click", () => {
     if (!studentToDelete) return;
